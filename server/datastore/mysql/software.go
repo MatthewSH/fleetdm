@@ -1856,6 +1856,7 @@ func (ds *Datastore) SoftwareByID(ctx context.Context, id uint, teamID *uint, in
 			"s.vendor",
 			"s.arch",
 			"s.extension_id",
+			"s.upgrade_code",
 			"scv.cve",
 			"scv.created_at",
 			goqu.COALESCE(goqu.I("scp.cpe"), "").As("generated_cpe"),
