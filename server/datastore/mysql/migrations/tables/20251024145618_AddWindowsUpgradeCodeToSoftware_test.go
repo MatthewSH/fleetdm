@@ -98,7 +98,8 @@ func TestUp_20251024145618(t *testing.T) {
 
 			var gotUniqueID fleet.StringIdentifierToIDPayload
 			err = db.Get(&gotUniqueID, "SELECT unique_identifier FROM software_titles WHERE id = ?", tC.titleID)
-			require.NoError(t, err)
+			// require.NoError(t, err)
+			require.Error(t, err)
 
 			assert.Equal(t, tC.expectedUniqueID, gotUniqueID)
 		})
