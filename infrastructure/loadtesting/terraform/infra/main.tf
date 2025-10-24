@@ -114,7 +114,7 @@ module "loadtest" {
     # Add these for MDM or cloudfront
     extra_execution_iam_policies = concat(
       module.mdm.extra_execution_iam_policies,
-      # module.cloudfront-software-installers.extra_execution_iam_policies,
+      module.cloudfront-software-installers.extra_execution_iam_policies,
       [
         resource.aws_iam_policy.license.arn
       ],
@@ -128,7 +128,7 @@ module "loadtest" {
     )
     extra_secrets = merge(
       module.mdm.extra_secrets,
-      # module.cloudfront-software-installers.extra_secrets,
+      module.cloudfront-software-installers.extra_secrets,
       local.extra_secrets
     )
     private_key_secret_name = "${local.customer}-fleet-server-private-key"
