@@ -130,7 +130,7 @@ locals {
 }
 
 module "main" {
-  source          = "github.com/fleetdm/fleet-terraform?ref=tf-mod-root-v1.17.0"
+  source          = "github.com/fleetdm/fleet-terraform?ref=tf-mod-root-v1.18.3"
   certificate_arn = module.acm.acm_certificate_arn
   vpc = {
     name = local.customer
@@ -308,6 +308,7 @@ module "main" {
   }
   alb_config = {
     name = local.customer
+    enable_deletion_protection = false
     access_logs = {
       bucket  = module.logging_alb.log_s3_bucket_id
       prefix  = local.customer
@@ -429,7 +430,7 @@ module "migrations" {
   depends_on = [
     module.geolite2
   ]
-  source                   = "github.com/fleetdm/fleet-terraform//addons/migrations?ref=tf-mod-addon-migrations-v2.1.0"
+  source                   = "github.com/fleetdm/fleet-terraform//addons/migrations?ref=tf-mod-addon-migrations-v2.2.0"
   ecs_cluster              = module.main.byo-vpc.byo-db.byo-ecs.service.cluster
   task_definition          = module.main.byo-vpc.byo-db.byo-ecs.task_definition.family
   task_definition_revision = module.main.byo-vpc.byo-db.byo-ecs.task_definition.revision
@@ -438,6 +439,7 @@ module "migrations" {
   ecs_service              = module.main.byo-vpc.byo-db.byo-ecs.service.name
   desired_count            = module.main.byo-vpc.byo-db.byo-ecs.appautoscaling_target.min_capacity
   min_capacity             = module.main.byo-vpc.byo-db.byo-ecs.appautoscaling_target.min_capacity
+  max_capacity             = module.main.byo-vpc.byo-db.byo-ecs.appautoscaling_target.max_capacity
   vuln_service             = module.vuln-processing.vuln_service_arn
 }
 
@@ -468,7 +470,7 @@ module "osquery-carve" {
 }
 
 module "monitoring" {
-  source                 = "github.com/fleetdm/fleet-terraform//addons/monitoring?ref=tf-mod-addon-monitoring-v1.5.1"
+  source                 = "github.com/fleetdm/fleet-terraform//addons/monitoring?ref=tf-mod-addon-monitoring-v1.7.0"
   customer_prefix        = local.customer
   fleet_ecs_service_name = module.main.byo-vpc.byo-db.byo-ecs.service.name
   albs = [

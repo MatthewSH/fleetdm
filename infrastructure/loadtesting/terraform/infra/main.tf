@@ -191,7 +191,7 @@ module "ses" {
 }
 
 module "migrations" {
-  source                   = "github.com/fleetdm/fleet-terraform//addons/migrations?ref=tf-mod-addon-migrations-v2.1.0"
+  source                   = "github.com/fleetdm/fleet-terraform//addons/migrations?ref=tf-mod-addon-migrations-v2.2.0"
   ecs_cluster              = module.loadtest.byo-db.byo-ecs.service.cluster
   task_definition          = module.loadtest.byo-db.byo-ecs.task_definition.family
   task_definition_revision = module.loadtest.byo-db.byo-ecs.task_definition.revision
@@ -200,6 +200,7 @@ module "migrations" {
   ecs_service              = module.loadtest.byo-db.byo-ecs.service.name
   desired_count            = module.loadtest.byo-db.byo-ecs.appautoscaling_target.min_capacity
   min_capacity             = module.loadtest.byo-db.byo-ecs.appautoscaling_target.min_capacity
+  max_capacity             = module.loadtest.byo-db.byo-ecs.appautoscaling_target.max_capacity
 
   depends_on = [
     module.loadtest,
